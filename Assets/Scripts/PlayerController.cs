@@ -15,9 +15,12 @@ public class PlayerController : MonoBehaviour
     public Vector2 jumpForce = new Vector2(0, 1150);    // Just enough to jump a "tile"
     public Vector2 walkForce = new Vector2(100, 0);
     public float maxWalkSpeed = 5;      // Speed cap, grounded and airborne
-    public float decceleration = 1.25f;     // To stop moving gradually without linear drag
+    public float horizontalDecceleration = 1.25f;     // To stop moving gradually without linear drag
     public float kickMotorSpeed = 1080;
     public float kickMaxMotorForce = 120;
+    public float footDeadzone = 0.05f;
+    public float footDecceleration = 1.75f;
+
 
 
 
@@ -124,7 +127,7 @@ public class PlayerController : MonoBehaviour
 
     private void Stop()
     {
-        rb.velocity = new Vector2(rb.velocity.x / decceleration, rb.velocity.y);    
+        rb.velocity = new Vector2(rb.velocity.x / horizontalDecceleration, rb.velocity.y);    
         // Using velocity and not friction because the player has to stop in the air too
         // Furthermore, linear drag affects in all directions, not just horizontally
     }
@@ -132,50 +135,54 @@ public class PlayerController : MonoBehaviour
     private void Kick()
     {
         // To prevent the accumulation of force on the foot...
+        // decrease the foot "strength" in each update
         if (m.maxMotorTorque > 2)
             m.maxMotorTorque /= 1.25f;
+
+        // Reset the foot "strength" to its original value when starting or stopping kicking
         if (Input.GetButtonDown(KickButton) || Input.GetButtonUp(KickButton))
             m.maxMotorTorque = kickMaxMotorForce;
 
         // The angles change depending on where the Player is facing
+        float stretchLevel;
         if (facing == Direction.Right)
         {
-            if (Input.GetButton(KickButton))
-            {
-                if (foot.jointAngle > (foot.limits.min + 5))
-                    m.motorSpeed = -kickMotorSpeed * Mathf.Pow(((foot.jointAngle + 15) / 120), 1.25f);
-                else
-                    m.motorSpeed = 0;
-            }
-            else
-            {
-                if (foot.jointAngle < (foot.limits.max - 5))
-                    m.motorSpeed = kickMotorSpeed * Mathf.Pow((1 - ((foot.jointAngle + 15) / 120)), 1.25f);
-                else
-                    m.motorSpeed = 0;
-            }
+            stretchLevel = 1 - ((foot.jointAngle + 15) / 120);     
         }
         else
         {
-            if (Input.GetButton(KickButton))
-            {
-                if (foot.jointAngle < (foot.limits.min - 5))
-                    m.motorSpeed = kickMotorSpeed * Mathf.Pow((1 - ((foot.jointAngle - 75) / 120)), 1.25f);
-                else
-                    m.motorSpeed = 0;
-            }
-            else
-            {
-                if (foot.jointAngle > (foot.limits.max + 5))
-                    m.motorSpeed = -kickMotorSpeed * Mathf.Pow(((foot.jointAngle - 75) / 120), 1.25f);
-                else
-                    m.motorSpeed = 0;
-            }
+            stretchLevel = (foot.jointAngle - 75) / 120;
         }
+        FootMovement(stretchLevel);
 
-        // Only update the joint motor if there have been any changes since last update
+        // Only update the foot motor if there have been any changes since the last update
         if (m.motorSpeed != foot.motor.motorSpeed || m.maxMotorTorque != foot.motor.maxMotorTorque)
             foot.motor = m;     
+    }
+
+    private void FootMovement(float stretchLevel)
+    // stretchLevel is used to gradually increase/decrease the foot speed depending on the relative angle (0 is not stretched, 1 is fully stretched)
+    {
+        float fSpeed = kickMotorSpeed;
+        if (facing == Direction.Left)
+            fSpeed *= -1;
+
+        if (Input.GetButton(KickButton))
+        {
+            // If the foot isn't fully stretched...
+            if (stretchLevel < (1 - footDeadzone))    // The deadzone activates the else clause earlier (the foot speed is set to 0 before fully stretched)
+                m.motorSpeed = -fSpeed * Mathf.Pow((1 - stretchLevel), footDecceleration);      // Gradually stretch the foot
+            else    // If it's fully stretched, stop the foot
+                m.motorSpeed = 0;
+        }
+        else
+        {
+            // If the foot is somewhat stretched...
+            if (stretchLevel > footDeadzone)
+                m.motorSpeed = fSpeed * Mathf.Pow(stretchLevel, footDecceleration);     // Gradually "retract" the foot
+            else    // If it isn't stretched, stop the foot
+                m.motorSpeed = 0;
+        }
     }
 
 }

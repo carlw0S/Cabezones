@@ -137,12 +137,14 @@ MonoBehaviour:
   RightButton: P1_Right
   JumpButton: P1_Jump
   KickButton: P1_Kick
-  baseJumpForce: {x: 0, y: 1150}
-  baseWalkForce: {x: 100, y: 0}
+  jumpForce: {x: 0, y: 1150}
+  walkForce: {x: 100, y: 0}
   maxWalkSpeed: 5
-  decceleration: 1.25
+  horizontalDecceleration: 1.25
   kickMotorSpeed: 1080
   kickMaxMotorForce: 120
+  footDeadzone: 0.05
+  footDecceleration: 1.75
 --- !u!1 &4803091532806117231
 GameObject:
   m_ObjectHideFlags: 0
