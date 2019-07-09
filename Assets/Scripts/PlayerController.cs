@@ -12,10 +12,10 @@ public class PlayerController : MonoBehaviour
     public string JumpButton;
     public string KickButton;
 
-    public Vector2 baseJumpForce = new Vector2(0, 1000);
-    public Vector2 baseWalkForce = new Vector2(100, 0);
-    public float maxWalkSpeed = 5;
-    public float decceleration = 1.25f;
+    public Vector2 jumpForce = new Vector2(0, 1150);    // Just enough to jump a "tile"
+    public Vector2 walkForce = new Vector2(100, 0);
+    public float maxWalkSpeed = 5;      // Speed cap, grounded and airborne
+    public float decceleration = 1.25f;     // To stop moving gradually without linear drag
     public float kickMotorSpeed = 1080;
     public float kickMaxMotorForce = 120;
 
@@ -33,7 +33,7 @@ public class PlayerController : MonoBehaviour
         m = foot.motor;
         m.maxMotorTorque = kickMaxMotorForce;
 
-        // change the side of the foot
+        // Change the side of the foot, depending on the direction the player is facing
         JointAngleLimits2D limits = foot.limits;
         if (facing == Direction.Right)
         {
@@ -51,10 +51,8 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
-        Move();      // amazing
+        Move();
         Kick();
-
-        // VALORES RELATIVOSSSSSSSSSSSSSSSSSSSSSSSSSS ???
     }
 
     void OnCollisionEnter2D(Collision2D col)
@@ -75,20 +73,20 @@ public class PlayerController : MonoBehaviour
 
     private void Move()
     {
-        // jumping
+        // Jumping
         if (Input.GetButtonDown(JumpButton))
         {
             Jump();
         }
 
-        // walking
-        if (Input.GetButton(LeftButton) && !Input.GetButton(RightButton))
+        // Horizontal movement
+        if (Input.GetButton(RightButton) && !Input.GetButton(LeftButton))
         {
-            MoveLeft();
+            Move(Direction.Right);
         }
-        else if (Input.GetButton(RightButton) && !Input.GetButton(LeftButton))
+        else if (Input.GetButton(LeftButton) && !Input.GetButton(RightButton))
         {
-            MoveRight();
+            Move(Direction.Left);
         }
         else
         {
@@ -101,45 +99,40 @@ public class PlayerController : MonoBehaviour
         if (onGround)
         {
             onGround = false;
-            rb.AddForce(baseJumpForce);
+            rb.AddForce(jumpForce);
         }
     }
 
-    private void MoveLeft()
+    private void Move(Direction dir)
     {
-        if (rb.velocity.x > -maxWalkSpeed)      // speed cap
-        {
-            if (rb.velocity.x > 0)                  // in order to counter a tackle...
-                rb.AddForce(-baseWalkForce * 2);
-            else rb.AddForce(-baseWalkForce);
-        }
-    }
+        int factor = 1;     // This factor allows to reuse the same code for Moving in both directions
+        if (dir == Direction.Left)
+            factor = -1;
 
-    private void MoveRight()
-    {
-        if (rb.velocity.x < maxWalkSpeed)       // speed cap
+        if ((factor * rb.velocity.x) < maxWalkSpeed)      // Speed cap
         {
-            if (rb.velocity.x < 0)                  // in order to counter a tackle...
-                rb.AddForce(baseWalkForce * 2);
-            else rb.AddForce(baseWalkForce);
+            if ((factor * rb.velocity.x) < 0)                 // Artificially double the Player force when another one pushes them in the opposite direction, in order to stop both
+                rb.AddForce((factor * walkForce) * 2);        // (maybe kinda rough, but it works reasonably well lol)
+            else rb.AddForce(factor * walkForce);
         }
     }
 
     private void Stop()
     {
         rb.velocity = new Vector2(rb.velocity.x / decceleration, rb.velocity.y);    
-        // using velocity and not friction because the player has to stop in the air too
-        // furthermore, linear drag affects in all directions
+        // Using velocity and not friction because the player has to stop in the air too
+        // Furthermore, linear drag affects in all directions, not just horizontally
     }
 
     private void Kick()
     {
-        // to prevent the accumulation of force on the foot...
+        // To prevent the accumulation of force on the foot...
         if (m.maxMotorTorque > 2)
             m.maxMotorTorque /= 1.25f;
         if (Input.GetButtonDown(KickButton) || Input.GetButtonUp(KickButton))
             m.maxMotorTorque = kickMaxMotorForce;
 
+        // The angles change depending on where the Player is facing
         if (facing == Direction.Right)
         {
             if (Input.GetButton(KickButton))
@@ -175,8 +168,9 @@ public class PlayerController : MonoBehaviour
             }
         }
 
+        // Only update the joint motor if there have been any changes since last update
         if (m.motorSpeed != foot.motor.motorSpeed || m.maxMotorTorque != foot.motor.maxMotorTorque)
-            foot.motor = m;     // only update the joint motor if there have been any changes
+            foot.motor = m;     
     }
 
 }
