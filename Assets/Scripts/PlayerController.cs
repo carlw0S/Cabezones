@@ -105,15 +105,20 @@ public class PlayerController : MonoBehaviour
 
     private void Move(Direction dir)
     {
-        int factor = 1;     // This factor allows to reuse the same code for Moving in both directions
+        float xVelocity = rb.velocity.x;
+        Vector2 wForce = walkForce;
+        
         if (dir == Direction.Left)
-            factor = -1;
-
-        if ((factor * rb.velocity.x) < maxWalkSpeed)      // Speed cap
         {
-            if ((factor * rb.velocity.x) < 0)                 // Artificially double the Player force when another one pushes them in the opposite direction, in order to stop both
-                rb.AddForce((factor * walkForce) * 2);        // (maybe kinda rough, but it works reasonably well lol)
-            else rb.AddForce(factor * walkForce);
+            xVelocity *= -1;
+            wForce *= -1;
+        }
+
+        if (xVelocity < maxWalkSpeed)      // Speed cap
+        {
+            if (xVelocity < 0)                 // Artificially double the Player force when another one pushes them in the opposite direction, in order to stop both
+                rb.AddForce(wForce * 2);        // (maybe kinda rough, but it works reasonably well lol)
+            else rb.AddForce(wForce);
         }
     }
 
