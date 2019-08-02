@@ -28,6 +28,14 @@ public class PlayerController : MonoBehaviour
     private HingeJoint2D foot;
     private bool onGround;
     private JointMotor2D m;
+    private Transform t;
+    private Vector3 initialPos;
+
+    void Awake()
+    {
+        t = GetComponent<Transform>();
+        initialPos = t.position;
+    }
 
     void Start()
     {
@@ -183,6 +191,13 @@ public class PlayerController : MonoBehaviour
             else    // If it isn't stretched, stop the foot
                 m.motorSpeed = 0;
         }
+    }
+
+
+
+    public void Reset()
+    {
+        t.position = initialPos;
     }
 
 }

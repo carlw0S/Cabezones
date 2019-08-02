@@ -5,6 +5,9 @@ using UnityEngine.UI;
 
 public class GoalDetector : MonoBehaviour
 {
+    public GameObject sceneControllerGO;
+    private SceneController sceneController;
+
     public GameObject notice;
     private Text noticeText;
 
@@ -22,16 +25,27 @@ public class GoalDetector : MonoBehaviour
         goalCounterText.text = goalCount.ToString();
 
         noticeText = notice.GetComponent<Text>();
+
+        sceneController = sceneControllerGO.GetComponent<SceneController>();
     }
 
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.CompareTag("Ball"))
         {
+            gameObject.SetActive(false);
+
             noticeText.text = "golaso";
             notice.SetActive(true);
             ++goalCount;
             goalCounterText.text = goalCount.ToString();
+
+            sceneController.ResetAll();
         }
+    }
+
+    public void Reset()
+    {
+        gameObject.SetActive(true);
     }
 }

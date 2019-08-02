@@ -26,7 +26,7 @@ public class Ball : MonoBehaviour
 
 
 
-    void Reset()
+    public void Reset()
     {
         rb.velocity = new Vector2();
         t.position = initialPos;
