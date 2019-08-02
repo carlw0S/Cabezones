@@ -7,11 +7,13 @@ public class Goal : MonoBehaviour
     public enum Direction { Right, Left };
 
     public Direction facing;
+    public GameObject goalCounter;
 
-    // Start is called before the first frame update
     void Start()
     {
         SurfaceEffector2D se = GetComponent<SurfaceEffector2D>();
+
+        // Change the direction in which the ball will be moved if it lands over the goal
         if (facing == Direction.Left)
             se.speed *= -1;
     }
