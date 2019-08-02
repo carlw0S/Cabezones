@@ -33,8 +33,6 @@ public class GoalDetector : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Ball"))
         {
-            gameObject.SetActive(false);
-
             noticeText.text = "golaso";
             notice.SetActive(true);
             ++goalCount;

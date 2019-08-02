@@ -24,6 +24,9 @@ public class SceneController : MonoBehaviour
 
     public void ResetAll()
     {
+        lGoalDetectorGO.SetActive(false);
+        rGoalDetectorGO.SetActive(false);
+
         Invoke("Reset", resetTime);
     }
 
@@ -32,8 +35,8 @@ public class SceneController : MonoBehaviour
         ball.Reset();
         lGoalDetector.Reset();
         rGoalDetector.Reset();
-        notice.Reset();
         lPlayer.Reset();
         rPlayer.Reset();
+        notice.Reset();
     }
 }
