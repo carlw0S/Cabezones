@@ -60,6 +60,15 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    void Update()
+    {
+        // This was in FixedUpdate initially, but it wouldn't get recognised with high FPS
+        if (Input.GetButtonDown(JumpButton))
+        {
+            Jump();
+        }
+    }
+
     void FixedUpdate()
     {
         Move();
@@ -84,12 +93,6 @@ public class PlayerController : MonoBehaviour
 
     private void Move()
     {
-        // Jumping
-        if (Input.GetButtonDown(JumpButton))
-        {
-            Jump();
-        }
-
         // Horizontal movement
         if (Input.GetButton(RightButton) && !Input.GetButton(LeftButton))
         {

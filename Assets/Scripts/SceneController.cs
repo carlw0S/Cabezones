@@ -20,6 +20,8 @@ public class SceneController : MonoBehaviour
         notice = noticeGO.GetComponent<Notice>();
         lPlayer = lPlayerGO.GetComponent<PlayerController>();
         rPlayer = rPlayerGO.GetComponent<PlayerController>();
+
+        Time.timeScale = 1;
     }
 
     public void ResetAll()
