@@ -6,7 +6,6 @@ public class Ball : MonoBehaviour
 {
     public int kickoffSpeed = 2;
     public float maxKickoffAngle = 30;
-
     public float kickoffDelay = 1;
 
     private Transform t;
@@ -30,9 +29,10 @@ public class Ball : MonoBehaviour
 
     public void Reset()
     {
-        rb.velocity = new Vector2();
+        rb.velocity = Vector2.zero;
         rb.angularVelocity = 0;
         rb.gravityScale = 0;
+        
         t.position = initialPos;
 
         Invoke("KickOff", kickoffDelay);

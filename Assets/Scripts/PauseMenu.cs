@@ -7,34 +7,38 @@ using UnityEngine.SceneManagement;
 public class PauseMenu : MonoBehaviour
 {
     public GameObject noticeGO;
-    private Text notice;
+    private Text noticeText;
 
-    public GameObject pauseGO, continueGO, exitGO;
+    public GameObject pauseButtonGO, continueButtonGO, exitButtonGO;
 
 
 
-    void Start()
+    void Awake()
     {
-        notice = noticeGO.GetComponent<Text>();
+        noticeText = noticeGO.GetComponent<Text>();
     }
 
     public void Pause()
     {
         Time.timeScale = 0;
-        notice.text = "Game Paused";
+
+        noticeText.text = "Game Paused";
         noticeGO.SetActive(true);
-        pauseGO.SetActive(false);
-        continueGO.SetActive(true);
-        exitGO.SetActive(true);
+
+        pauseButtonGO.SetActive(false);
+        continueButtonGO.SetActive(true);
+        exitButtonGO.SetActive(true);
     }
 
     public void Continue()
     {
         Time.timeScale = 1;
+
         noticeGO.SetActive(false);
-        pauseGO.SetActive(true);
-        continueGO.SetActive(false);
-        exitGO.SetActive(false);
+        
+        pauseButtonGO.SetActive(true);
+        continueButtonGO.SetActive(false);
+        exitButtonGO.SetActive(false);
     }
 
     public void GotoMainMenu()

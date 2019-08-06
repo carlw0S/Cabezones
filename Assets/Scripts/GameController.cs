@@ -2,43 +2,38 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SceneController : MonoBehaviour
+public class GameController : MonoBehaviour
 {
     public float resetTime = 3;
 
     public GameObject ballGO, lGoalDetectorGO, rGoalDetectorGO, noticeGO, lPlayerGO, rPlayerGO;
     private Ball ball;
-    private GoalDetector lGoalDetector, rGoalDetector;
-    private Notice notice;
     private PlayerController lPlayer, rPlayer;
 
-    void Start()
+    void Awake()
     {
         ball = ballGO.GetComponent<Ball>();
-        lGoalDetector = lGoalDetectorGO.GetComponent<GoalDetector>();
-        rGoalDetector = rGoalDetectorGO.GetComponent<GoalDetector>();
-        notice = noticeGO.GetComponent<Notice>();
         lPlayer = lPlayerGO.GetComponent<PlayerController>();
         rPlayer = rPlayerGO.GetComponent<PlayerController>();
 
         Time.timeScale = 1;
     }
 
-    public void ResetAll()
+    public void Goal()
     {
         lGoalDetectorGO.SetActive(false);
         rGoalDetectorGO.SetActive(false);
 
-        Invoke("Reset", resetTime);
+        Invoke("ResetAll", resetTime);
     }
 
-    private void Reset()
+    private void ResetAll()
     {
-        ball.Reset();
-        lGoalDetector.Reset();
-        rGoalDetector.Reset();
         lPlayer.Reset();
         rPlayer.Reset();
-        notice.Reset();
+        ball.Reset();
+        lGoalDetectorGO.SetActive(true);
+        rGoalDetectorGO.SetActive(true);
+        noticeGO.SetActive(false);
     }
 }

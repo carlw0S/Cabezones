@@ -5,28 +5,27 @@ using UnityEngine.UI;
 
 public class GoalDetector : MonoBehaviour
 {
-    public GameObject sceneControllerGO;
-    private SceneController sceneController;
+    public GameObject gameControllerGO, noticeGO, goalCounterGO;
 
-    public GameObject notice;
+    private GameController gameController;
     private Text noticeText;
-
-
-    public GameObject goalCounter;
     private Text goalCounterText;
+
 
 
     private int goalCount;
 
+    void Awake()
+    {
+        goalCounterText = goalCounterGO.GetComponent<Text>();
+        noticeText = noticeGO.GetComponent<Text>();
+        gameController = gameControllerGO.GetComponent<GameController>();
+    }
+
     void Start()
     {
-        goalCounterText = goalCounter.GetComponent<Text>();
         goalCount = 0;
         goalCounterText.text = goalCount.ToString();
-
-        noticeText = notice.GetComponent<Text>();
-
-        sceneController = sceneControllerGO.GetComponent<SceneController>();
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -34,11 +33,12 @@ public class GoalDetector : MonoBehaviour
         if (other.gameObject.CompareTag("Ball"))
         {
             noticeText.text = "golaso";
-            notice.SetActive(true);
+            noticeGO.SetActive(true);
+
             ++goalCount;
             goalCounterText.text = goalCount.ToString();
 
-            sceneController.ResetAll();
+            gameController.Goal();
         }
     }
 

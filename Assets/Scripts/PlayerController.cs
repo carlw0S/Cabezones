@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public enum Direction { Right, Left };
-
     public Direction facing;
     public string LeftButton;
     public string RightButton;
@@ -33,14 +31,15 @@ public class PlayerController : MonoBehaviour
 
     void Awake()
     {
+        rb = GetComponent<Rigidbody2D>();
+        foot = GetComponentInChildren<HingeJoint2D>();
+
         t = GetComponent<Transform>();
         initialPos = t.position;
     }
 
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
-        foot = GetComponentInChildren<HingeJoint2D>();
         m = foot.motor;
         m.maxMotorTorque = kickMaxMotorForce;
 
