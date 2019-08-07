@@ -4,12 +4,12 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class PauseMenu : MonoBehaviour
+public class GameMenu : MonoBehaviour
 {
     public GameObject noticeGO;
     private Text noticeText;
 
-    public GameObject pauseButtonGO, continueButtonGO, exitButtonGO;
+    public GameObject pauseButtonGO, continueButtonGO, exitButtonGO, rematchButtonGO;
 
 
 
@@ -27,6 +27,7 @@ public class PauseMenu : MonoBehaviour
 
         pauseButtonGO.SetActive(false);
         continueButtonGO.SetActive(true);
+        rematchButtonGO.SetActive(true);
         exitButtonGO.SetActive(true);
     }
 
@@ -38,12 +39,26 @@ public class PauseMenu : MonoBehaviour
         
         pauseButtonGO.SetActive(true);
         continueButtonGO.SetActive(false);
+        rematchButtonGO.SetActive(false);
         exitButtonGO.SetActive(false);
     }
 
-    public void GotoMainMenu()
+    public void Rematch()
+    {
+        Time.timeScale = 1;
+        SceneManager.LoadScene("Game");
+    }
+
+    public void Exit()
     {
         Time.timeScale = 1;
         SceneManager.LoadScene("MainMenu");
+    }
+
+    public void Win()
+    {
+        pauseButtonGO.SetActive(false);
+        rematchButtonGO.SetActive(true);
+        exitButtonGO.SetActive(true);
     }
 }

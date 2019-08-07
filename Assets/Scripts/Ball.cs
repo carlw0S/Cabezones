@@ -22,7 +22,7 @@ public class Ball : MonoBehaviour
 
     void Start()
     {
-        Reset();
+        t.position = new Vector3(15, 0, 0);
     }
 
 

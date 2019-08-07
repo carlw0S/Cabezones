@@ -36,10 +36,7 @@ public class PlayerController : MonoBehaviour
 
         t = GetComponent<Transform>();
         initialPos = t.position;
-    }
 
-    void Start()
-    {
         m = foot.motor;
         m.maxMotorTorque = kickMaxMotorForce;
 
@@ -57,6 +54,11 @@ public class PlayerController : MonoBehaviour
             limits.max = 75;
             foot.limits = limits;
         }
+    }
+
+    void Start()
+    {
+        t.position = new Vector3(15, 0, 0);
     }
 
     void Update()

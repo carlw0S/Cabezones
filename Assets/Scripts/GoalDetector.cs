@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class GoalDetector : MonoBehaviour
 {
-    public GameObject gameControllerGO, noticeGO, goalCounterGO;
+    public GameObject gameControllerGO, noticeGO, oppositeGoalCounterGO, oppositePlayerGO;
 
     private GameController gameController;
     private Text noticeText;
@@ -17,13 +17,10 @@ public class GoalDetector : MonoBehaviour
 
     void Awake()
     {
-        goalCounterText = goalCounterGO.GetComponent<Text>();
+        goalCounterText = oppositeGoalCounterGO.GetComponent<Text>();
         noticeText = noticeGO.GetComponent<Text>();
         gameController = gameControllerGO.GetComponent<GameController>();
-    }
-
-    void Start()
-    {
+        
         goalCount = 0;
         goalCounterText.text = goalCount.ToString();
     }
@@ -32,13 +29,13 @@ public class GoalDetector : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Ball"))
         {
-            noticeText.text = "golaso";
+            noticeText.text = "Goal for " + oppositePlayerGO.name + "!";
             noticeGO.SetActive(true);
 
             ++goalCount;
             goalCounterText.text = goalCount.ToString();
 
-            gameController.Goal();
+            gameController.Goal(goalCount == gameController.goalsToWin, oppositePlayerGO.name);
         }
     }
 
