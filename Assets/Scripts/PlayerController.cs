@@ -5,10 +5,9 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     public Direction facing;
-    public string LeftButton;
-    public string RightButton;
     public string JumpButton;
     public string KickButton;
+    public string HorizontalAxis;
 
     public Vector2 jumpForce = new Vector2(0, 1150);    // Just enough to jump a "tile"
     public Vector2 walkForce = new Vector2(100, 0);
@@ -95,18 +94,17 @@ public class PlayerController : MonoBehaviour
     private void Move()
     {
         // Horizontal movement
-        if (Input.GetButton(RightButton) && !Input.GetButton(LeftButton))
+        float hAxis = Input.GetAxis(HorizontalAxis);
+        if (hAxis != 0)
         {
-            Move(Direction.Right);
-        }
-        else if (Input.GetButton(LeftButton) && !Input.GetButton(RightButton))
-        {
-            Move(Direction.Left);
+            Move(hAxis);
         }
         else
         {
             Stop();
         }
+
+        Debug.Log(Input.GetAxis(HorizontalAxis));
     }
 
     private void Jump()
@@ -118,12 +116,12 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void Move(Direction dir)
+    private void Move(float joystickTilt)
     {
         float xVelocity = rb.velocity.x;
-        Vector2 wForce = walkForce;
+        Vector2 wForce = walkForce * Mathf.Abs(Mathf.Pow(joystickTilt, 2));
         
-        if (dir == Direction.Left)
+        if (joystickTilt < 0)   // Moving left
         {
             xVelocity *= -1;
             wForce *= -1;
