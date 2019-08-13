@@ -103,8 +103,6 @@ public class PlayerController : MonoBehaviour
         {
             Stop();
         }
-
-        Debug.Log(Input.GetAxis(HorizontalAxis));
     }
 
     private void Jump()
