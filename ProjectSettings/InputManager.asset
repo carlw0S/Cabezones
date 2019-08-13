@@ -6,27 +6,11 @@ InputManager:
   serializedVersion: 2
   m_Axes:
   - serializedVersion: 3
-    m_Name: P1_Horizontal
-    descriptiveName: Joystick (P1)
+    m_Name: P1_Left
+    descriptiveName: 
     descriptiveNegativeName: 
     negativeButton: 
-    positiveButton: 
-    altNegativeButton: 
-    altPositiveButton: 
-    gravity: 0
-    dead: 0.19
-    sensitivity: 1
-    snap: 0
-    invert: 0
-    type: 2
-    axis: 0
-    joyNum: 1
-  - serializedVersion: 3
-    m_Name: P1_Horizontal
-    descriptiveName: D-Pad (P1)
-    descriptiveNegativeName: 
-    negativeButton: 
-    positiveButton: 
+    positiveButton: a
     altNegativeButton: 
     altPositiveButton: 
     gravity: 1000
@@ -34,33 +18,33 @@ InputManager:
     sensitivity: 1000
     snap: 0
     invert: 0
-    type: 2
-    axis: 5
-    joyNum: 1
+    type: 0
+    axis: 0
+    joyNum: 0
   - serializedVersion: 3
-    m_Name: P1_Horizontal
-    descriptiveName: Horizontal (P1)
+    m_Name: P1_Right
+    descriptiveName: 
     descriptiveNegativeName: 
-    negativeButton: a
+    negativeButton: 
     positiveButton: d
     altNegativeButton: 
     altPositiveButton: 
     gravity: 1000
     dead: 0.001
     sensitivity: 1000
-    snap: 1
+    snap: 0
     invert: 0
     type: 0
     axis: 0
-    joyNum: 1
+    joyNum: 0
   - serializedVersion: 3
     m_Name: P1_Jump
-    descriptiveName: Jump (P1)
+    descriptiveName: 
     descriptiveNegativeName: 
     negativeButton: 
     positiveButton: w
     altNegativeButton: 
-    altPositiveButton: joystick 1 button 0
+    altPositiveButton: 
     gravity: 1000
     dead: 0.001
     sensitivity: 1000
@@ -71,12 +55,12 @@ InputManager:
     joyNum: 0
   - serializedVersion: 3
     m_Name: P1_Kick
-    descriptiveName: Kick (P1)
+    descriptiveName: 
     descriptiveNegativeName: 
     negativeButton: 
     positiveButton: space
     altNegativeButton: 
-    altPositiveButton: joystick 1 button 2
+    altPositiveButton: 
     gravity: 1000
     dead: 0.001
     sensitivity: 1000
@@ -86,27 +70,11 @@ InputManager:
     axis: 0
     joyNum: 0
   - serializedVersion: 3
-    m_Name: P2_Horizontal
-    descriptiveName: Joystick (P2)
+    m_Name: P2_Left
+    descriptiveName: 
     descriptiveNegativeName: 
     negativeButton: 
-    positiveButton: 
-    altNegativeButton: 
-    altPositiveButton: 
-    gravity: 0
-    dead: 0.19
-    sensitivity: 1
-    snap: 0
-    invert: 0
-    type: 2
-    axis: 0
-    joyNum: 2
-  - serializedVersion: 3
-    m_Name: P2_Horizontal
-    descriptiveName: D-Pad (P2)
-    descriptiveNegativeName: 
-    negativeButton: 
-    positiveButton: 
+    positiveButton: left
     altNegativeButton: 
     altPositiveButton: 
     gravity: 1000
@@ -114,14 +82,14 @@ InputManager:
     sensitivity: 1000
     snap: 0
     invert: 0
-    type: 2
-    axis: 5
-    joyNum: 2
+    type: 0
+    axis: 0
+    joyNum: 0
   - serializedVersion: 3
-    m_Name: P2_Horizontal
-    descriptiveName: Horizontal (P2)
+    m_Name: P2_Right
+    descriptiveName: 
     descriptiveNegativeName: 
-    negativeButton: left
+    negativeButton: 
     positiveButton: right
     altNegativeButton: 
     altPositiveButton: 
@@ -132,7 +100,7 @@ InputManager:
     invert: 0
     type: 0
     axis: 0
-    joyNum: 2
+    joyNum: 0
   - serializedVersion: 3
     m_Name: P2_Jump
     descriptiveName: 
@@ -140,7 +108,7 @@ InputManager:
     negativeButton: 
     positiveButton: up
     altNegativeButton: 
-    altPositiveButton: joystick 2 button 0
+    altPositiveButton: 
     gravity: 1000
     dead: 0.001
     sensitivity: 1000
@@ -151,12 +119,12 @@ InputManager:
     joyNum: 0
   - serializedVersion: 3
     m_Name: P2_Kick
-    descriptiveName: Kick (P2)
+    descriptiveName: 
     descriptiveNegativeName: 
     negativeButton: 
     positiveButton: p
     altNegativeButton: 
-    altPositiveButton: joystick 2 button 2
+    altPositiveButton: 
     gravity: 1000
     dead: 0.001
     sensitivity: 1000
