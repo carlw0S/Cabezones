@@ -25,7 +25,6 @@ public class GameController : MonoBehaviour
         noticeText.text = "First player to score " + goalsToWin + " goals wins!";
         noticeGO.SetActive(true);
 
-        Time.timeScale = 1;
         Invoke("StartUp", resetTime);
     }
 
