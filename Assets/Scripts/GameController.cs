@@ -11,9 +11,11 @@ public class GameController : MonoBehaviour
     public GameMenu gameMenu;
     private Ball ball;
     private PlayerController lPlayer, rPlayer;
+    private GoalDetector lGoalDetector, rGoalDetector;
     private Text noticeText, timerText;
     private string winnerName = "";
-    private bool updateTime = false;
+    private bool updateTime = false,
+                 timedGame = true;
     private float timeDelay;    // Time that has to be subtracted due to game halts (when a goal occurs, for example),
                                 // since I can't set timeScale to 0
 
@@ -22,15 +24,19 @@ public class GameController : MonoBehaviour
         ball = ballGO.GetComponent<Ball>();
         lPlayer = lPlayerGO.GetComponent<PlayerController>();
         rPlayer = rPlayerGO.GetComponent<PlayerController>();
+        lGoalDetector = lGoalDetectorGO.GetComponent<GoalDetector>();
+        rGoalDetector = rGoalDetectorGO.GetComponent<GoalDetector>();
         noticeText = noticeGO.GetComponent<Text>();
         timerText = timerGO.GetComponent<Text>();
-        timerText.text = "0'00''000";
 
         if (GameOptions.goalLimit == 1)
             noticeText.text = "Golden Goal!";
         else
             noticeText.text = "First player to score " + GameOptions.goalLimit + " goals wins!";
         noticeGO.SetActive(true);
+
+        if (GameOptions.timeLimit == 0)
+            timedGame = false;
 
         timeDelay = resetTime + ball.kickoffDelay;
         Time.timeScale = 1;
@@ -39,16 +45,31 @@ public class GameController : MonoBehaviour
 
     void Update()
     {
-        if (updateTime)
+        if (updateTime && timedGame)
         {
-            float time = Time.timeSinceLevelLoad - timeDelay;
-            int totalSeconds = Mathf.FloorToInt(time);
-            int seconds = totalSeconds % 60;
-            int minutes = totalSeconds / 60;
-            int milliseconds = Mathf.FloorToInt((time - totalSeconds) * 1000);
+            float time = GameOptions.timeLimit - (Time.timeSinceLevelLoad - timeDelay);
+            if (time <= 0)
+            {
+                lGoalDetectorGO.SetActive(false);
+                rGoalDetectorGO.SetActive(false);
 
-            string timer = string.Format("{0}'{1:00}''{2:000}", minutes, seconds, milliseconds);
-            timerText.text = timer;
+                updateTime = false;
+                UpdateTime(0);
+
+                noticeText.text = "Time!";
+                noticeGO.SetActive(true);
+
+                if (lGoalDetector.getGoalCount() > rGoalDetector.getGoalCount())
+                    winnerName = lPlayer.name;
+                else if (lGoalDetector.getGoalCount() < rGoalDetector.getGoalCount())
+                    winnerName = rPlayer.name;
+                else
+                    winnerName = "Everyone";
+
+                Invoke("Win", resetTime);
+            }
+            else
+                UpdateTime(time);
         }
     }
 
@@ -77,7 +98,11 @@ public class GameController : MonoBehaviour
     {
         lGoalCounterGO.SetActive(true);
         rGoalCounterGO.SetActive(true);
-        timerGO.SetActive(true);
+        if (GameOptions.timeLimit != 0)
+        {
+            UpdateTime(GameOptions.timeLimit);
+            timerGO.SetActive(true);
+        }
         ResetAll();
     }
 
@@ -103,5 +128,16 @@ public class GameController : MonoBehaviour
     private void UpdateTime()
     {
         updateTime = true;
+    }
+
+    private void UpdateTime(float time)
+    {
+        int totalSeconds = Mathf.FloorToInt(time);
+        int seconds = totalSeconds % 60;
+        int minutes = totalSeconds / 60;
+        int milliseconds = Mathf.FloorToInt((time - totalSeconds) * 1000);
+
+        string timer = string.Format("{0}'{1:00}''{2:000}", minutes, seconds, milliseconds);
+        timerText.text = timer;
     }
 }
