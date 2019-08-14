@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class GameController : MonoBehaviour
 {
     public float resetTime = 1;
-    public int goalsToWin = 7;
 
     public GameObject ballGO, lGoalDetectorGO, rGoalDetectorGO, noticeGO, lPlayerGO, rPlayerGO, lGoalCounterGO, rGoalCounterGO, timerGO;
     public GameMenu gameMenu;
@@ -27,7 +26,10 @@ public class GameController : MonoBehaviour
         timerText = timerGO.GetComponent<Text>();
         timerText.text = "0'00''000";
 
-        noticeText.text = "First player to score " + goalsToWin + " goals wins!";
+        if (GameOptions.goalLimit == 1)
+            noticeText.text = "Golden Goal!";
+        else
+            noticeText.text = "First player to score " + GameOptions.goalLimit + " goals wins!";
         noticeGO.SetActive(true);
 
         timeDelay = resetTime + ball.kickoffDelay;

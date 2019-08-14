@@ -6,24 +6,31 @@ using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviour
 {
-    public GameObject timeLimitGO;
-    private Text timeLimitText;
+    public GameObject timeLimitGO, goalLimitGO;
+    private Text timeLimitText, goalLimitText;
 
     public float timeLimit = 120;
     public float maxTimeLimit = 300;
+
+    public int goalLimit = 7;
+    public int maxGoalLimit = 11;
 
     
 
     void Awake()
     {
         timeLimitText = timeLimitGO.GetComponent<Text>();
+        goalLimitText = goalLimitGO.GetComponent<Text>();
         updateTimeLimit();
+        updateGoalLimit();
     }
 
 
 
     public void GotoGameScene()
     {
+        GameOptions.timeLimit = timeLimit;
+        GameOptions.goalLimit = goalLimit;
         SceneManager.LoadScene("Game");
     }
 
@@ -56,5 +63,29 @@ public class MainMenu : MonoBehaviour
             timeLimitText.text = "∞";
         else
             timeLimitText.text = string.Format("{0}:{1:00}", (int) timeLimit / 60, timeLimit % 60);
+    }
+
+
+
+    public void increaseGoalLimit()
+    {
+        if (goalLimit < maxGoalLimit)
+            goalLimit += 1;
+        updateGoalLimit();
+    }
+
+    public void decreaseGoalLimit()
+    {
+        if (goalLimit > 1)
+            goalLimit -= 1;
+        updateGoalLimit();
+    }
+
+    private void updateGoalLimit()
+    {
+        if (goalLimit == 1)
+            goalLimitText.text = "Golden Goal";
+        else
+            goalLimitText.text = goalLimit.ToString();
     }
 }

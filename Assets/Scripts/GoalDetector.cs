@@ -35,7 +35,7 @@ public class GoalDetector : MonoBehaviour
             ++goalCount;
             goalCounterText.text = goalCount.ToString();
 
-            gameController.Goal(goalCount == gameController.goalsToWin, oppositePlayerGO.name);
+            gameController.Goal(goalCount == GameOptions.goalLimit, oppositePlayerGO.name);
         }
     }
 
