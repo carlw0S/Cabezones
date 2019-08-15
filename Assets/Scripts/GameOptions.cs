@@ -4,6 +4,6 @@ using UnityEngine;
 
 public class GameOptions : MonoBehaviour
 {
-    public static float timeLimit;
-    public static int goalLimit;
+    public static float timeLimit = 120;
+    public static int goalLimit = 7;
 }

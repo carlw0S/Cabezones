@@ -135,9 +135,10 @@ public class GameController : MonoBehaviour
         int totalSeconds = Mathf.FloorToInt(time);
         int seconds = totalSeconds % 60;
         int minutes = totalSeconds / 60;
-        int milliseconds = Mathf.FloorToInt((time - totalSeconds) * 1000);
+        // int milliseconds = Mathf.FloorToInt((time - totalSeconds) * 1000);
 
-        string timer = string.Format("{0}'{1:00}''{2:000}", minutes, seconds, milliseconds);
+        // string timer = string.Format("{0}'{1:00}''{2:000}", minutes, seconds, milliseconds);
+        string timer = string.Format("{0}:{1:00}", minutes, seconds);
         timerText.text = timer;
     }
 }
