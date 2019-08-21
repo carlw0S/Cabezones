@@ -86,9 +86,11 @@ public class MainMenu : MonoBehaviour
 
     private void updateGoalLimit()
     {
-        if (goalLimit == 1)
-            goalLimitText.text = "Golden Goal";
-        else
-            goalLimitText.text = goalLimit.ToString();
+        // if (goalLimit == 1)
+        //     goalLimitText.text = "Golden Goal";
+        // else
+        //     goalLimitText.text = goalLimit.ToString();
+        
+        goalLimitText.text = goalLimit.ToString();
     }
 }

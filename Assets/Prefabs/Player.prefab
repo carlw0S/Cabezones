@@ -134,8 +134,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   facing: 0
-  LeftButton: P1_Left
-  RightButton: P1_Right
   JumpButton: P1_Jump
   KickButton: P1_Kick
   HorizontalAxis: P1_Horizontal
@@ -220,7 +218,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 4d4dcf2c8d84a8448a49608a9fa6bf9a, type: 3}
-  m_Color: {r: 1, g: 0.6214302, b: 0.2216981, a: 1}
+  m_Color: {r: 0.5849056, g: 0.5849056, b: 0.5849056, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
