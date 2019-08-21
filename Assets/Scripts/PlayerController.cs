@@ -8,6 +8,7 @@ public class PlayerController : MonoBehaviour
     public string JumpButton;
     public string KickButton;
     public string HorizontalAxis;
+    public Joystick joystick;
 
     public Vector2 jumpForce = new Vector2(0, 1150);    // Just enough to jump a "tile"
     public Vector2 walkForce = new Vector2(100, 0);
@@ -94,7 +95,12 @@ public class PlayerController : MonoBehaviour
     private void Move()
     {
         // Horizontal movement
-        float hAxis = Input.GetAxis(HorizontalAxis);
+        float hAxis;
+        // if (Application.platform == RuntimePlatform.Android)
+            hAxis = joystick.GetJoystickTilt();
+        // else
+        //     hAxis = Input.GetAxis(HorizontalAxis);
+
         if (hAxis != 0)
         {
             Move(hAxis);
