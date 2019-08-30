@@ -15,6 +15,7 @@ public class Joystick : MonoBehaviour
     void Awake()
     {
         t = GetComponent<Transform>();
+
         initialPos = t.position;
         joystickZ = initialPos.z;
     }

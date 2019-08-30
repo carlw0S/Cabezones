@@ -96,10 +96,10 @@ public class PlayerController : MonoBehaviour
     {
         // Horizontal movement
         float hAxis;
-        // if (Application.platform == RuntimePlatform.Android)
+        if (Input.touchSupported)
             hAxis = joystick.GetJoystickTilt();
-        // else
-        //     hAxis = Input.GetAxis(HorizontalAxis);
+        else
+            hAxis = Input.GetAxis(HorizontalAxis);
 
         if (hAxis != 0)
         {

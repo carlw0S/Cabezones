@@ -6,8 +6,8 @@ using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviour
 {
-    public GameObject timeLimitGO, goalLimitGO;
-    private Text timeLimitText, goalLimitText;
+    public GameObject timeLimitGO, goalLimitGO, touchControlsButtonGO;
+    private Text timeLimitText, goalLimitText, touchControlsText;
 
     public float timeLimit = 120;
     public float maxTimeLimit = 300;
@@ -15,7 +15,9 @@ public class MainMenu : MonoBehaviour
     public int goalLimit = 7;
     public int maxGoalLimit = 11;
 
-    
+    public bool touchControls = false;
+
+
 
     void Awake()
     {
@@ -24,8 +26,12 @@ public class MainMenu : MonoBehaviour
 
         timeLimitText = timeLimitGO.GetComponent<Text>();
         goalLimitText = goalLimitGO.GetComponent<Text>();
+        touchControlsText = touchControlsButtonGO.GetComponentInChildren<Text>();
         updateTimeLimit();
         updateGoalLimit();
+
+        if (Input.touchSupported)
+            toggleTouchControls();
     }
 
 
@@ -34,6 +40,7 @@ public class MainMenu : MonoBehaviour
     {
         GameOptions.timeLimit = timeLimit;
         GameOptions.goalLimit = goalLimit;
+        GameOptions.touchControls = touchControls;
         SceneManager.LoadScene("Game");
     }
 
@@ -92,5 +99,15 @@ public class MainMenu : MonoBehaviour
         //     goalLimitText.text = goalLimit.ToString();
         
         goalLimitText.text = goalLimit.ToString();
+    }
+
+
+
+    public void toggleTouchControls()
+    {
+        if (touchControls = !touchControls)     // fancy
+            touchControlsText.text = "ON";
+        else
+            touchControlsText.text = "OFF";
     }
 }

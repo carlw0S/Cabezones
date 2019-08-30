@@ -7,7 +7,7 @@ public class GameController : MonoBehaviour
 {
     public float resetTime = 1;
 
-    public GameObject ballGO, lGoalDetectorGO, rGoalDetectorGO, noticeGO, lPlayerGO, rPlayerGO, lGoalCounterGO, rGoalCounterGO, timerGO;
+    public GameObject ballGO, lGoalDetectorGO, rGoalDetectorGO, noticeGO, lPlayerGO, rPlayerGO, lGoalCounterGO, rGoalCounterGO, timerGO, touchControlsGO;
     public GameMenu gameMenu;
     private Ball ball;
     private PlayerController lPlayer, rPlayer;
@@ -28,6 +28,9 @@ public class GameController : MonoBehaviour
         rGoalDetector = rGoalDetectorGO.GetComponent<GoalDetector>();
         noticeText = noticeGO.GetComponent<Text>();
         timerText = timerGO.GetComponent<Text>();
+
+        if (GameOptions.touchControls)
+            touchControlsGO.SetActive(true);
 
         if (GameOptions.goalLimit == 1)
             noticeText.text = "Golden Goal!";
