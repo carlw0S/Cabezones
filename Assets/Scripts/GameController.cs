@@ -31,6 +31,8 @@ public class GameController : MonoBehaviour
 
         if (GameOptions.touchControls)
             touchControlsGO.SetActive(true);
+        else
+            touchControlsGO.SetActive(false);
 
         if (GameOptions.goalLimit == 1)
             noticeText.text = "Golden Goal!";

@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
     public string KickButton;
     public string HorizontalAxis;
     public Joystick joystick;
+    public GameObject jumpTouchButtonGO;
 
     public Vector2 jumpForce = new Vector2(0, 1150);    // Just enough to jump a "tile"
     public Vector2 walkForce = new Vector2(100, 0);
@@ -64,6 +65,22 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         // This was in FixedUpdate initially, but it wouldn't get recognised with high FPS
+
+        if (GameOptions.touchControls)
+        {
+            foreach (Touch touch in Input.touches)
+            {
+                Vector3 touchWorldPos = Camera.main.ScreenToWorldPoint(touch.position);
+                if (touchWorldPos.x > (jumpTouchButtonGO.transform.position.x - jumpTouchButtonGO.transform.localScale.x / 2) &&
+                    touchWorldPos.x < (jumpTouchButtonGO.transform.position.x + jumpTouchButtonGO.transform.localScale.x / 2) &&
+                    touchWorldPos.y > (jumpTouchButtonGO.transform.position.y - jumpTouchButtonGO.transform.localScale.y / 2) &&
+                    touchWorldPos.y < (jumpTouchButtonGO.transform.position.y + jumpTouchButtonGO.transform.localScale.y / 2))    // Touch is within the range of the jump button
+                {
+                    Jump();
+                }
+            }
+        }
+
         if (Input.GetButtonDown(JumpButton))
         {
             Jump();
@@ -96,7 +113,7 @@ public class PlayerController : MonoBehaviour
     {
         // Horizontal movement
         float hAxis;
-        if (Input.touchSupported)
+        if (GameOptions.touchControls)
             hAxis = joystick.GetJoystickTilt();
         else
             hAxis = Input.GetAxis(HorizontalAxis);
