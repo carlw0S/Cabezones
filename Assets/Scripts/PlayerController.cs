@@ -13,7 +13,7 @@ public class PlayerController : MonoBehaviour
 
     public Vector2 jumpForce = new Vector2(0, 1150);    // Just enough to jump a "tile"
     public Vector2 walkForce = new Vector2(100, 0);
-    public float maxWalkSpeed = 5;      // Speed cap, grounded and airborne
+    public float maxWalkSpeed = 5;      // Speed cap, on ground and airborne
     public float horizontalDecceleration = 1.25f;     // To stop moving gradually without linear drag
     public float kickMotorSpeed = 1080;
     public float kickMaxMotorForce = 120;
@@ -31,6 +31,8 @@ public class PlayerController : MonoBehaviour
     private Vector3 initialPos;
     private bool jumpTouchButtonPressed = false,
                  jumpTouchButtonHeld = false;       // To prevent repeated jumps by holding the virtual jump button
+    private bool kickTouchButtonPressed = false,
+                 kickTouchButtonPressedLastUpdate = false;
 
     void Awake()
     {
@@ -70,19 +72,7 @@ public class PlayerController : MonoBehaviour
 
         if (GameOptions.touchControls)
         {
-            jumpTouchButtonPressed = false;
-            foreach (Touch touch in Input.touches)
-            {
-                Vector3 touchWorldPos = Camera.main.ScreenToWorldPoint(touch.position);
-                if (touchWorldPos.x > (jumpTouchButtonGO.transform.position.x - jumpTouchButtonGO.transform.localScale.x / 2) &&
-                    touchWorldPos.x < (jumpTouchButtonGO.transform.position.x + jumpTouchButtonGO.transform.localScale.x / 2) &&
-                    touchWorldPos.y > (jumpTouchButtonGO.transform.position.y - jumpTouchButtonGO.transform.localScale.y / 2) &&
-                    touchWorldPos.y < (jumpTouchButtonGO.transform.position.y + jumpTouchButtonGO.transform.localScale.y / 2))    // Touch is within the range of the jump button
-                {
-                    jumpTouchButtonPressed = true;
-                    break;
-                }
-            }
+            jumpTouchButtonPressed = detectTouchButtonPress(jumpTouchButtonGO);
 
             if (jumpTouchButtonPressed)
             {
@@ -185,14 +175,32 @@ public class PlayerController : MonoBehaviour
 
     private void Kick()
     {
+        kickTouchButtonPressed = detectTouchButtonPress(kickTouchButtonGO);
+
         // To prevent the accumulation of force on the foot...
         // decrease the foot "strength" in each update
         if (m.maxMotorTorque > 2)
             m.maxMotorTorque /= 1.25f;
 
         // Reset the foot "strength" to its original value when starting or stopping kicking
-        if (Input.GetButtonDown(KickButton) || Input.GetButtonUp(KickButton))
-            m.maxMotorTorque = kickMaxMotorForce;
+        if (GameOptions.touchControls)
+        {
+            if ((kickTouchButtonPressed && !kickTouchButtonPressedLastUpdate) ||
+                (!kickTouchButtonPressed && kickTouchButtonPressedLastUpdate))
+            {
+                m.maxMotorTorque = kickMaxMotorForce;
+            }
+
+            if (kickTouchButtonPressed)
+                kickTouchButtonPressedLastUpdate = true;
+            else
+                kickTouchButtonPressedLastUpdate = false;
+        }
+        else
+        {
+            if (Input.GetButtonDown(KickButton) || Input.GetButtonUp(KickButton))
+                m.maxMotorTorque = kickMaxMotorForce;
+        }
 
         // The angles change depending on where the Player is facing
         float stretchLevel;
@@ -208,7 +216,7 @@ public class PlayerController : MonoBehaviour
 
         // Only update the foot motor if there have been any changes since the last update
         if (m.motorSpeed != foot.motor.motorSpeed || m.maxMotorTorque != foot.motor.maxMotorTorque)
-            foot.motor = m;     
+            foot.motor = m;
     }
 
     private void FootMovement(float stretchLevel)
@@ -218,7 +226,18 @@ public class PlayerController : MonoBehaviour
         if (facing == Direction.Left)
             fSpeed *= -1;
 
-        if (Input.GetButton(KickButton))
+
+        bool kickButtonHeld = false;
+        if (GameOptions.touchControls)
+        {
+            kickButtonHeld = kickTouchButtonPressed;
+        }
+        else
+        {
+            kickButtonHeld = Input.GetButton(KickButton);
+        }
+
+        if (kickButtonHeld)
         {
             // If the foot isn't fully stretched...
             if (stretchLevel < (1 - footDeadzone))    // The deadzone activates the else clause earlier (the foot speed is set to 0 before fully stretched)
@@ -234,6 +253,25 @@ public class PlayerController : MonoBehaviour
             else    // If it isn't stretched, stop the foot
                 m.motorSpeed = 0;
         }
+    }
+
+    private bool detectTouchButtonPress(GameObject touchButton)
+    {
+        bool touchButtonPressed = false;
+        foreach (Touch touch in Input.touches)
+        {
+            Vector3 touchWorldPos = Camera.main.ScreenToWorldPoint(touch.position);
+            if (touchWorldPos.x > (touchButton.transform.position.x - touchButton.transform.localScale.x / 2) &&
+                touchWorldPos.x < (touchButton.transform.position.x + touchButton.transform.localScale.x / 2) &&
+                touchWorldPos.y > (touchButton.transform.position.y - touchButton.transform.localScale.y / 2) &&
+                touchWorldPos.y < (touchButton.transform.position.y + touchButton.transform.localScale.y / 2))    // Touch is within the range of the jump button
+            {
+                touchButtonPressed = true;
+                break;
+            }
+        }
+
+        return touchButtonPressed;
     }
 
 
