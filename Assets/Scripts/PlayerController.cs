@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour
     public string KickButton;
     public string HorizontalAxis;
     public Joystick joystick;
-    public GameObject jumpTouchButtonGO;
+    public GameObject jumpTouchButtonGO, kickTouchButtonGO;
 
     public Vector2 jumpForce = new Vector2(0, 1150);    // Just enough to jump a "tile"
     public Vector2 walkForce = new Vector2(100, 0);
@@ -29,6 +29,8 @@ public class PlayerController : MonoBehaviour
     private JointMotor2D m;
     private Transform t;
     private Vector3 initialPos;
+    private bool jumpTouchButtonPressed = false,
+                 jumpTouchButtonHeld = false;       // To prevent repeated jumps by holding the virtual jump button
 
     void Awake()
     {
@@ -68,6 +70,7 @@ public class PlayerController : MonoBehaviour
 
         if (GameOptions.touchControls)
         {
+            jumpTouchButtonPressed = false;
             foreach (Touch touch in Input.touches)
             {
                 Vector3 touchWorldPos = Camera.main.ScreenToWorldPoint(touch.position);
@@ -76,14 +79,31 @@ public class PlayerController : MonoBehaviour
                     touchWorldPos.y > (jumpTouchButtonGO.transform.position.y - jumpTouchButtonGO.transform.localScale.y / 2) &&
                     touchWorldPos.y < (jumpTouchButtonGO.transform.position.y + jumpTouchButtonGO.transform.localScale.y / 2))    // Touch is within the range of the jump button
                 {
+                    jumpTouchButtonPressed = true;
+                    break;
+                }
+            }
+
+            if (jumpTouchButtonPressed)
+            {
+                if (!jumpTouchButtonHeld)
+                {
+                    jumpTouchButtonHeld = true;
                     Jump();
                 }
             }
+            else
+            {
+                if (onGround)
+                    jumpTouchButtonHeld = false;
+            }
         }
-
-        if (Input.GetButtonDown(JumpButton))
+        else
         {
-            Jump();
+            if (Input.GetButtonDown(JumpButton))
+            {
+                Jump();
+            }
         }
     }
 
