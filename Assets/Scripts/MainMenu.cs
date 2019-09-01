@@ -6,8 +6,8 @@ using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviour
 {
-    public GameObject timeLimitGO, goalLimitGO, touchControlsButtonGO;
-    private Text timeLimitText, goalLimitText, touchControlsText;
+    public GameObject timeLimitGO, goalLimitGO, touchControlsButtonGO, itemsButtonGO;
+    private Text timeLimitText, goalLimitText, touchControlsText, itemsButtonText;
 
     public float timeLimit = 120;
     public float maxTimeLimit = 300;
@@ -16,6 +16,8 @@ public class MainMenu : MonoBehaviour
     public int maxGoalLimit = 11;
 
     public bool touchControls = false;
+
+    public bool items = true;
 
 
 
@@ -27,11 +29,12 @@ public class MainMenu : MonoBehaviour
         timeLimitText = timeLimitGO.GetComponent<Text>();
         goalLimitText = goalLimitGO.GetComponent<Text>();
         touchControlsText = touchControlsButtonGO.GetComponentInChildren<Text>();
-        updateTimeLimit();
-        updateGoalLimit();
+        itemsButtonText = itemsButtonGO.GetComponentInChildren<Text>();
+        UpdateTimeLimit();
+        UpdateGoalLimit();
 
         if (Input.touchSupported)
-            toggleTouchControls();
+            ToggleTouchControls();
     }
 
 
@@ -41,6 +44,7 @@ public class MainMenu : MonoBehaviour
         GameOptions.timeLimit = timeLimit;
         GameOptions.goalLimit = goalLimit;
         GameOptions.touchControls = touchControls;
+        GameOptions.items = items;
         SceneManager.LoadScene("Game");
     }
 
@@ -49,25 +53,25 @@ public class MainMenu : MonoBehaviour
         Application.Quit();
     }
 
-    public void increaseTimeLimit()
+    public void IncreaseTimeLimit()
     {
         if (timeLimit < maxTimeLimit)
             timeLimit += 30;
         else
             timeLimit = 0;
-        updateTimeLimit();
+        UpdateTimeLimit();
     }
 
-    public void decreaseTimeLimit()
+    public void DecreaseTimeLimit()
     {
         if (timeLimit > 0)
             timeLimit -= 30;
         else
             timeLimit = maxTimeLimit;
-        updateTimeLimit();
+        UpdateTimeLimit();
     }
 
-    private void updateTimeLimit()
+    private void UpdateTimeLimit()
     {
         if (timeLimit == 0)
             timeLimitText.text = "∞";
@@ -77,21 +81,21 @@ public class MainMenu : MonoBehaviour
 
 
 
-    public void increaseGoalLimit()
+    public void IncreaseGoalLimit()
     {
         if (goalLimit < maxGoalLimit)
             goalLimit += 1;
-        updateGoalLimit();
+        UpdateGoalLimit();
     }
 
-    public void decreaseGoalLimit()
+    public void DecreaseGoalLimit()
     {
         if (goalLimit > 1)
             goalLimit -= 1;
-        updateGoalLimit();
+        UpdateGoalLimit();
     }
 
-    private void updateGoalLimit()
+    private void UpdateGoalLimit()
     {
         // if (goalLimit == 1)
         //     goalLimitText.text = "Golden Goal";
@@ -103,11 +107,21 @@ public class MainMenu : MonoBehaviour
 
 
 
-    public void toggleTouchControls()
+    public void ToggleTouchControls()
     {
         if (touchControls = !touchControls)     // fancy
             touchControlsText.text = "ON";
         else
             touchControlsText.text = "OFF";
+    }
+
+
+
+    public void ToggleItems()
+    {
+        if (items = !items)
+            itemsButtonText.text = "ON";
+        else
+            itemsButtonText.text = "OFF";
     }
 }

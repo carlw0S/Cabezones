@@ -44,7 +44,7 @@ public class GoalDetector : MonoBehaviour
         gameObject.SetActive(true);
     }
 
-    public int getGoalCount()
+    public int GetGoalCount()
     {
         return goalCount;
     }

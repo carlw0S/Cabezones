@@ -12,10 +12,10 @@ public class FPSCounter : MonoBehaviour
 
     void Start()
     {
-        InvokeRepeating("showFPS", 0.5f, 0.5f);
+        InvokeRepeating("ShowFPS", 0.5f, 0.5f);
     }
 
-    private void showFPS()
+    private void ShowFPS()
     {
         int fps = (int)(1f / Time.unscaledDeltaTime);
         FPSCounterText.text = fps.ToString() + " FPS";

@@ -28,7 +28,7 @@ public class PlayerController : MonoBehaviour
     private bool onGround;
     private JointMotor2D m;
     private Transform t;
-    private Vector3 initialPos;
+    private Vector3 initialPos, initialScale;
     private bool jumpTouchButtonPressed = false,
                  jumpTouchButtonHeld = false;       // To prevent repeated jumps by holding the virtual jump button
     private bool kickTouchButtonPressed = false,
@@ -41,6 +41,7 @@ public class PlayerController : MonoBehaviour
 
         t = GetComponent<Transform>();
         initialPos = t.position;
+        initialScale = t.localScale;
 
         m = foot.motor;
         m.maxMotorTorque = kickMaxMotorForce;
@@ -72,7 +73,7 @@ public class PlayerController : MonoBehaviour
 
         if (GameOptions.touchControls)
         {
-            jumpTouchButtonPressed = detectTouchButtonPress(jumpTouchButtonGO);
+            jumpTouchButtonPressed = DetectTouchButtonPress(jumpTouchButtonGO);
 
             if (jumpTouchButtonPressed)
             {
@@ -175,7 +176,7 @@ public class PlayerController : MonoBehaviour
 
     private void Kick()
     {
-        kickTouchButtonPressed = detectTouchButtonPress(kickTouchButtonGO);
+        kickTouchButtonPressed = DetectTouchButtonPress(kickTouchButtonGO);
 
         // To prevent the accumulation of force on the foot...
         // decrease the foot "strength" in each update
@@ -255,7 +256,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private bool detectTouchButtonPress(GameObject touchButton)
+    private bool DetectTouchButtonPress(GameObject touchButton)
     {
         bool touchButtonPressed = false;
         foreach (Touch touch in Input.touches)
@@ -276,9 +277,18 @@ public class PlayerController : MonoBehaviour
 
 
 
-    public void Reset()
+    public void ResetPosition()
     {
         t.position = initialPos;
+    }
+
+    public void ResetSize(float delay)
+    {
+        Invoke("ResetSize", delay);
+    }
+    private void ResetSize()    // polymorphism is amazing
+    {
+        t.localScale = initialScale;
     }
 
 }

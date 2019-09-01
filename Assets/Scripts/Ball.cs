@@ -11,6 +11,8 @@ public class Ball : MonoBehaviour
     private Transform t;
     private Rigidbody2D rb;
     private Vector3 initialPos;
+    private string lastPlayerTouch;
+    
 
     void Awake()
     {
@@ -25,9 +27,16 @@ public class Ball : MonoBehaviour
         t.position = new Vector3(15, 0, 0);
     }
 
+    void OnCollisionEnter2D(Collision2D col)
+    {
+        string tag = col.gameObject.tag;
+        if (tag.Contains("Player"))
+            lastPlayerTouch = tag;
+    }
 
 
-    public void Reset()
+
+    public void ResetPosition()
     {
         rb.velocity = Vector2.zero;
         rb.angularVelocity = 0;
@@ -46,5 +55,12 @@ public class Ball : MonoBehaviour
 
         rb.gravityScale = 1;
         rb.AddForce(kickoff);
+    }
+
+
+
+    public string GetLastPlayerTouch()
+    {
+        return lastPlayerTouch;
     }
 }

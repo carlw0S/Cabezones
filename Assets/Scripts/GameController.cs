@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class GameController : MonoBehaviour
 {
     public float resetTime = 1;
+    public float itemEffectDuration = 10f;
 
     public GameObject ballGO, lGoalDetectorGO, rGoalDetectorGO, noticeGO, lPlayerGO, rPlayerGO, lGoalCounterGO, rGoalCounterGO, timerGO, touchControlsGO;
     public GameMenu gameMenu;
@@ -64,9 +65,9 @@ public class GameController : MonoBehaviour
                 noticeText.text = "Time!";
                 noticeGO.SetActive(true);
 
-                if (lGoalDetector.getGoalCount() > rGoalDetector.getGoalCount())
+                if (lGoalDetector.GetGoalCount() > rGoalDetector.GetGoalCount())
                     winnerName = lPlayer.name;
-                else if (lGoalDetector.getGoalCount() < rGoalDetector.getGoalCount())
+                else if (lGoalDetector.GetGoalCount() < rGoalDetector.GetGoalCount())
                     winnerName = rPlayer.name;
                 else
                     winnerName = "Everyone";
@@ -113,9 +114,9 @@ public class GameController : MonoBehaviour
 
     private void ResetAll()
     {
-        lPlayer.Reset();
-        rPlayer.Reset();
-        ball.Reset();
+        lPlayer.ResetPosition();
+        rPlayer.ResetPosition();
+        ball.ResetPosition();
         lGoalDetectorGO.SetActive(true);
         rGoalDetectorGO.SetActive(true);
         noticeGO.SetActive(false);
@@ -145,5 +146,39 @@ public class GameController : MonoBehaviour
         // string timer = string.Format("{0}'{1:00}''{2:000}", minutes, seconds, milliseconds);
         string timer = string.Format("{0}:{1:00}", minutes, seconds);
         timerText.text = timer;
+    }
+
+
+
+
+    /* ITEMS */
+
+    public void ActivateItem(int itemID, string playerTag)
+    {
+        PlayerController player;
+        if (playerTag.Equals("Player1"))
+            player = lPlayer;
+        else
+            player = rPlayer;
+
+        switch (itemID)
+        {
+            case 1: Grow(player);   break;
+            case 2: Shrink(player); break;
+
+            default: Debug.Log("Wrong item ID: " + itemID); break;
+        }
+    }
+
+    private void Grow(PlayerController player)
+    {
+        player.gameObject.transform.localScale *= 1.5f;
+        player.ResetSize(itemEffectDuration);
+    }
+
+    private void Shrink(PlayerController player)
+    {
+        player.gameObject.transform.localScale /= 1.5f;
+        player.ResetSize(itemEffectDuration);
     }
 }
