@@ -24,7 +24,7 @@ public class Ball : MonoBehaviour
 
     void Start()
     {
-        t.position = new Vector3(15, 0, 0);
+        t.position = new Vector3(0, 10, 0);
     }
 
     void OnCollisionEnter2D(Collision2D col)

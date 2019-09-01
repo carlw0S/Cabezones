@@ -6,12 +6,14 @@ using UnityEngine.UI;
 public class GameController : MonoBehaviour
 {
     public float resetTime = 1;
-    public float itemEffectDuration = 10f;
+    public static float itemEffectDuration = 10f;
 
-    public GameObject ballGO, lGoalDetectorGO, rGoalDetectorGO, noticeGO, lPlayerGO, rPlayerGO, lGoalCounterGO, rGoalCounterGO, timerGO, touchControlsGO;
+    public GameObject ballGO, lGoalDetectorGO, rGoalDetectorGO, noticeGO, lPlayerGO, rPlayerGO, lGoalCounterGO, rGoalCounterGO, timerGO, touchControlsGO,
+                      groundGO, ceilingGO, leftWallGO, rightWallGO;
     public GameMenu gameMenu;
+    public GameObject itemPrefab;
     private Ball ball;
-    private PlayerController lPlayer, rPlayer;
+    private static PlayerController lPlayer, rPlayer;
     private GoalDetector lGoalDetector, rGoalDetector;
     private Text noticeText, timerText;
     private string winnerName = "";
@@ -19,6 +21,7 @@ public class GameController : MonoBehaviour
                  timedGame = true;
     private float timeDelay;    // Time that has to be subtracted due to game halts (when a goal occurs, for example),
                                 // since I can't set timeScale to 0
+    private int itemSpawnProbability = 25;
 
     void Awake()
     {
@@ -47,6 +50,9 @@ public class GameController : MonoBehaviour
         timeDelay = resetTime + ball.kickoffDelay;
         Time.timeScale = 1;
         Invoke("StartUp", resetTime);
+
+        if (GameOptions.items)
+            InvokeRepeating("SpawnItem", 1f, 1f);
     }
 
     void Update()
@@ -153,7 +159,29 @@ public class GameController : MonoBehaviour
 
     /* ITEMS */
 
-    public void ActivateItem(int itemID, string playerTag)
+    private void SpawnItem()
+    {
+        if (Random.Range(0, itemSpawnProbability) == 0)
+        {
+            itemSpawnProbability += 25;
+
+            Vector3 position = Vector3.zero;
+            float width = itemPrefab.transform.localScale.x;
+            float height = itemPrefab.transform.localScale.y;
+            // The item will spawn in the upper half of the game field
+            position.x = Random.Range((leftWallGO.transform.position.x + leftWallGO.transform.localScale.x / 2) + (width / 2), 
+                                    (rightWallGO.transform.position.x - rightWallGO.transform.localScale.x / 2) - (width / 2));
+            position.y = Random.Range(0f + (height / 2), 
+                                    (ceilingGO.transform.position.y - ceilingGO.transform.localScale.y / 2) - (height / 2));
+
+            Instantiate(itemPrefab, position, Quaternion.identity);
+        }
+        else
+            if (itemSpawnProbability > 0)
+                itemSpawnProbability--;
+    }
+
+    public static void ActivateItem(int itemID, string playerTag)
     {
         PlayerController player;
         if (playerTag.Equals("Player1"))
@@ -170,13 +198,13 @@ public class GameController : MonoBehaviour
         }
     }
 
-    private void Grow(PlayerController player)
+    private static void Grow(PlayerController player)
     {
         player.gameObject.transform.localScale *= 1.5f;
         player.ResetSize(itemEffectDuration);
     }
 
-    private void Shrink(PlayerController player)
+    private static void Shrink(PlayerController player)
     {
         player.gameObject.transform.localScale /= 1.5f;
         player.ResetSize(itemEffectDuration);

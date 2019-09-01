@@ -64,7 +64,10 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
-        t.position = new Vector3(15, 0, 0);
+        if (facing == Direction.Right)
+            t.position = new Vector3(-15, 0, 0);
+        else
+            t.position = new Vector3(15, 0, 0);
     }
 
     void Update()
