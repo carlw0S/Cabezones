@@ -7,6 +7,9 @@ public class Ball : MonoBehaviour
     public int kickoffSpeed = 2;
     public float maxKickoffAngle = 30;
     public float kickoffDelay = 1;
+    public float headVelocityMultiplier = 1.25f;
+    public float footVelocityMultiplier = 1.5f;
+
 
     private Transform t;
     private Rigidbody2D rb;
@@ -31,7 +34,15 @@ public class Ball : MonoBehaviour
     {
         string tag = col.gameObject.tag;
         if (tag.Contains("Player"))
+        {
             lastPlayerTouch = tag;
+            
+            if (col.gameObject.name.Contains("Foot"))
+                rb.velocity *= footVelocityMultiplier;      // Foot collision
+            else
+                rb.velocity *= headVelocityMultiplier;      // Head collision
+        }
+        
     }
 
 
