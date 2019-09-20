@@ -21,6 +21,9 @@ public class MainMenu : MonoBehaviour
 
 
 
+    private string easterEgg = new string('w', 5);
+    private uint easterEggIndex = 0;
+
     void Awake()
     {
         if (Application.platform == RuntimePlatform.Android)
@@ -35,6 +38,17 @@ public class MainMenu : MonoBehaviour
 
         if (Input.touchSupported)
             ToggleTouchControls();
+    }
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha0))
+            easterEggIndex = 0;
+
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            
+        }
     }
 
 
