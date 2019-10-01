@@ -140,7 +140,7 @@ MonoBehaviour:
   joystick: {fileID: 0}
   jumpTouchButtonGO: {fileID: 0}
   kickTouchButtonGO: {fileID: 0}
-  jumpForce: {x: 0, y: 1375}
+  jumpForce: {x: 0, y: 1650}
   walkForce: {x: 100, y: 0}
   maxWalkSpeed: 5
   horizontalDecceleration: 1.25
