@@ -20,7 +20,7 @@ public class FPSCounter : MonoBehaviour
     private void ShowFPS()
     {
         int fps = (int)(1f / (deltas / count));
-        FPSCounterText.text = fps.ToString() + " FPS";
+        FPSCounterText.text = fps.ToString() + " FPS (screen Hz: " + Screen.currentResolution.refreshRate + ")";
         deltas = 0f;
         count = 0;
     }

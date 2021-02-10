@@ -27,7 +27,7 @@ public class MainMenu : MonoBehaviour
     void Awake()
     {
         if (Application.platform == RuntimePlatform.Android)
-            Application.targetFrameRate = 60;
+            Application.targetFrameRate = Screen.currentResolution.refreshRate;
 
         timeLimitText = timeLimitGO.GetComponent<Text>();
         goalLimitText = goalLimitGO.GetComponent<Text>();
