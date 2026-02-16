@@ -1,7 +1,7 @@
 # Cabezones
-A (sassy) clone of certain football game I'm pretty fond of ;)
+I loved playing the Sports Heads games on our highschool laptops with my friends, so I decided to try and recreate it with Unity back when I was learning programming.
 
-Since the original game is an online Flash game, it is kinda awkward to play, and performance isn't very nice either, so I decided to remake it from scratch in Unity (it's my first project, so it probably is a mess, but I guess it is somewhat playable lol)
+The end result is veeery bare-bones because I quickly lost interest in the project and in Unity in general, but it is completely functional and brings me very treasured memories.
 
 ![cabezones_menu](https://github.com/user-attachments/assets/3084a7bb-6571-4fab-a87f-4e2e9bc9ba10)
 
