@@ -1,5 +1,5 @@
 # Cabezones
-I loved playing the Sports Heads games on our highschool laptops with my friends, so I decided to try and recreate it with Unity back when I was learning programming.
+I loved playing the Sports Heads games with my friends in school (and all the way through to uni, actually...), so I decided to try and recreate it with Unity back when I was learning game programming.
 
 The end result is veeery bare-bones because I quickly lost interest in the project and in Unity in general, but it is completely functional and brings me very treasured memories.
 
